@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screen/HomeScreen";
 import OnboardingScreen from "../screen/OnboardingScreen";
 import { AsyncKey, getItem } from "../helpers/asyncStorage";
+import MovieScreen from "../screen/MovieScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,11 @@ function AppNavigation() {
             options={{ headerShown: false }}
             name="Home"
             component={HomeScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Movie"
+            component={MovieScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>
