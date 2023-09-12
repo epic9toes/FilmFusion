@@ -1,6 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "react-native-onboarding-swiper": [
+        "typings/react-native-onboarding-swiper.d.ts"
+      ]
+    },
     "strict": true
   }
 }
