@@ -6,9 +6,16 @@ export interface Movie {
   year?: string;
   title?: string;
 }
+
+export type Person = {
+  id: number;
+  name?: string;
+};
+
 export type RootStackParamList = {
   Home: undefined;
   Onboarding: undefined;
+  Person: { person: Person };
   Movie: { movie: Movie };
   // Define other screens and their parameters
 };
