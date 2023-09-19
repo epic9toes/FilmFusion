@@ -7,8 +7,9 @@ import { globalHeight, globalWidth } from "../constants";
 interface MovieListProps {
   Movies: Movie[];
   title?: string;
+  seeAll?: boolean;
 }
-const MovieList: React.FC<MovieListProps> = ({ Movies, title }) => {
+const MovieList: React.FC<MovieListProps> = ({ Movies, title, seeAll }) => {
   const navigation = useNavigation<RootStackNavigationProp<"Movie">>();
   // Function to navigate to the "Movie" screen with a selected movie object
   const handleClick = (selectedMovie: Movie) => {
@@ -19,9 +20,13 @@ const MovieList: React.FC<MovieListProps> = ({ Movies, title }) => {
     <View className="mt-1 mb-8 space-y-4">
       <View className="flex-row items-center justify-between mx-4">
         <Text className="text-xl text-white">{title}</Text>
-        <TouchableOpacity>
-          <Text className="text-lg font-semibold text-yellow-700">See All</Text>
-        </TouchableOpacity>
+        {seeAll && (
+          <TouchableOpacity>
+            <Text className="text-lg font-semibold text-yellow-700">
+              See All
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
       {/* movie row */}
       <ScrollView

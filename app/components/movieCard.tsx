@@ -1,4 +1,4 @@
-import { View, Text, TouchableWithoutFeedback, Image } from "react-native";
+import { TouchableWithoutFeedback, Image } from "react-native";
 import React from "react";
 import { globalHeight, globalWidth } from "../constants";
 
