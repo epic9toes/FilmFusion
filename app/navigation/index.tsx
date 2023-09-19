@@ -43,6 +43,16 @@ function AppNavigation() {
             name="Home"
             component={HomeScreen}
           />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Movie"
+            component={MovieScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Person"
+            component={PersonScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );

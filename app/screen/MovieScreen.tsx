@@ -1,28 +1,18 @@
-import {
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Platform,
-  Text,
-} from "react-native";
+import { View, Image, ScrollView, Text } from "react-native";
 import React, { useEffect, useState } from "react";
-import { RouteProp, useNavigation } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { Movie, Person, RootStackParamList } from "app/navigation/types";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ChevronLeftIcon } from "react-native-heroicons/outline";
-import { HeartIcon } from "react-native-heroicons/solid";
-import { colors, globalHeight, globalWidth } from "../constants";
+import { globalHeight, globalWidth } from "../constants";
 import { LinearGradient } from "expo-linear-gradient";
 import Cast from "../components/cast";
 import MovieList from "../components/movieList";
+import TopButtons from "../components/topButtons";
 
 type MovieScreenProps = {
   route: RouteProp<RootStackParamList, "Movie">;
 };
 
 const MovieScreen: React.FC<MovieScreenProps> = ({ route }) => {
-  const [isFav, setIsFav] = useState<boolean>(false);
   const [similarMovies, setSimilarMovies] = useState<Movie[]>([
     { id: 1, name: "The Flying Dragon" },
     { id: 1, name: "Shining Amour" },
@@ -44,9 +34,6 @@ const MovieScreen: React.FC<MovieScreenProps> = ({ route }) => {
   ]);
   const movie = route.params;
   const { id, name } = route.params.movie;
-  const ios = Platform.OS === "ios";
-  const topMargin = ios ? "" : " mt-3";
-  const navigation = useNavigation();
 
   useEffect(() => {
     //logic
@@ -59,23 +46,7 @@ const MovieScreen: React.FC<MovieScreenProps> = ({ route }) => {
     >
       {/* Back button and Movie Poster */}
       <View className="w-full">
-        <SafeAreaView
-          className={
-            "absolute z-20 flex-row items-center justify-between w-full px-4 " +
-            topMargin
-          }
-        >
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={{ backgroundColor: colors.Gold }}
-            className="p-1 rounded-xl"
-          >
-            <ChevronLeftIcon size={28} strokeWidth={2.5} color={"white"} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setIsFav(!isFav)}>
-            <HeartIcon size={37} color={isFav ? "red" : "white"} />
-          </TouchableOpacity>
-        </SafeAreaView>
+        <TopButtons extraNativeWindStyle="absolute" />
         <View>
           <Image
             source={require("../assets/images/movie1.jpg")}
