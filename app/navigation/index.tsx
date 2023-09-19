@@ -6,6 +6,7 @@ import OnboardingScreen from "../screen/OnboardingScreen";
 import { AsyncKey, getItem } from "../helpers/asyncStorage";
 import MovieScreen from "../screen/MovieScreen";
 import PersonScreen from "../screen/PersonScreen";
+import SearchScreen from "../screen/SearchScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,11 @@ function AppNavigation() {
             name="Person"
             component={PersonScreen}
           />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Search"
+            component={SearchScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -79,6 +85,11 @@ function AppNavigation() {
             options={{ headerShown: false }}
             name="Person"
             component={PersonScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false }}
+            name="Search"
+            component={SearchScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

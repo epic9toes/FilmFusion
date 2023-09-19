@@ -15,6 +15,7 @@ export type Person = {
 export type RootStackParamList = {
   Home: undefined;
   Onboarding: undefined;
+  Search: undefined;
   Person: { person: Person };
   Movie: { movie: Movie };
   // Define other screens and their parameters

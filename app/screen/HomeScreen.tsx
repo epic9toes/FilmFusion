@@ -17,9 +17,11 @@ import {
 } from "react-native-heroicons/outline";
 import TrendingMovies from "../components/trendingMovies";
 import MovieList from "../components/movieList";
+import Loading from "../components/loading";
 
 export default function HomeScreen() {
-  const navigation = useNavigation<RootStackNavigationProp<"Onboarding">>();
+  const navigation =
+    useNavigation<RootStackNavigationProp<"Onboarding" | "Search">>();
   const [trendingMovies, setTrendingMovies] = useState<Movie[]>([
     { id: 1, name: "mekwa" },
     { id: 1, name: "mekwa" },
@@ -35,6 +37,7 @@ export default function HomeScreen() {
     { id: 1, name: "Shining Amour" },
     { id: 1, name: "The Offer" },
   ]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const handleAsyncReset = async () => {
     await removeItem(AsyncKey);
@@ -54,23 +57,27 @@ export default function HomeScreen() {
             <Text className="text-3xl font-extrabold text-red-500">F</Text>
             usion
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Search")}>
             <MagnifyingGlassIcon size={30} strokeWidth={2} color={"white"} />
           </TouchableOpacity>
         </View>
       </SafeAreaView>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 10 }}
-      >
-        {/* Trending Movies  Carousel */}
-        <TrendingMovies Movies={trendingMovies} />
-        {/* Upcoming Movie List */}
-        <MovieList seeAll={true} title="Upcoming" Movies={upcoming} />
-        {/* Top rated movies */}
-        <MovieList seeAll={true} title="Top Rated" Movies={topRated} />
-      </ScrollView>
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 10 }}
+        >
+          {/* Trending Movies  Carousel */}
+          <TrendingMovies Movies={trendingMovies} />
+          {/* Upcoming Movie List */}
+          <MovieList seeAll={true} title="Upcoming" Movies={upcoming} />
+          {/* Top rated movies */}
+          <MovieList seeAll={true} title="Top Rated" Movies={topRated} />
+        </ScrollView>
+      )}
     </View>
   );
 }
