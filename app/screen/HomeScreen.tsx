@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AsyncKey, removeItem } from "../helpers/asyncStorage";
 import { useNavigation } from "@react-navigation/native";
 import { RootStackNavigationProp, Movie } from "../navigation/types";
@@ -18,25 +18,18 @@ import {
 import TrendingMovies from "../components/trendingMovies";
 import MovieList from "../components/movieList";
 import Loading from "../components/loading";
+import {
+  fetchTopRatedMovies,
+  fetchTrendingMovies,
+  fetchUpcomingMovies,
+} from "../api/themoviedb";
 
 export default function HomeScreen() {
   const navigation =
     useNavigation<RootStackNavigationProp<"Onboarding" | "Search">>();
-  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([
-    { id: 1, name: "mekwa" },
-    { id: 1, name: "mekwa" },
-    { id: 1, name: "mekwa" },
-  ]);
-  const [upcoming, setUpcoming] = useState<Movie[]>([
-    { id: 1, name: "The Flying Dragon" },
-    { id: 1, name: "Shining Amour" },
-    { id: 1, name: "The Offer" },
-  ]);
-  const [topRated, setTopRated] = useState<Movie[]>([
-    { id: 1, name: "The Flying Dragon" },
-    { id: 1, name: "Shining Amour" },
-    { id: 1, name: "The Offer" },
-  ]);
+  const [trendingMovies, setTrendingMovies] = useState<Movie[]>([]);
+  const [upcoming, setUpcoming] = useState<Movie[]>([]);
+  const [topRated, setTopRated] = useState<Movie[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   const handleAsyncReset = async () => {
@@ -44,6 +37,37 @@ export default function HomeScreen() {
     navigation.push("Onboarding");
   };
   const ios = Platform.OS == "ios";
+
+  useEffect(() => {
+    getTrendingMovies();
+    getUpcomingMovies();
+    getTopRatedMovies();
+
+    return () => {};
+  }, []);
+
+  const getTrendingMovies = async () => {
+    const data = await fetchTrendingMovies();
+    if (data?.results) {
+      setTrendingMovies(data.results);
+      setLoading(false);
+    }
+  };
+
+  const getUpcomingMovies = async () => {
+    const data = await fetchUpcomingMovies();
+    if (data?.results) {
+      setUpcoming(data.results);
+    }
+  };
+
+  const getTopRatedMovies = async () => {
+    const data = await fetchTopRatedMovies();
+    if (data?.results) {
+      setTopRated(data.results);
+    }
+  };
+
   return (
     <View className="flex-1 pt-2 bg-neutral-800">
       {/* Search Bar and Logo */}
@@ -71,7 +95,9 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingBottom: 10 }}
         >
           {/* Trending Movies  Carousel */}
-          <TrendingMovies Movies={trendingMovies} />
+          {trendingMovies.length > 0 && (
+            <TrendingMovies Movies={trendingMovies} />
+          )}
           {/* Upcoming Movie List */}
           <MovieList seeAll={true} title="Upcoming" Movies={upcoming} />
           {/* Top rated movies */}

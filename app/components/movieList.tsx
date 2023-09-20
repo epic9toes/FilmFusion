@@ -3,6 +3,7 @@ import React from "react";
 import { Movie, RootStackNavigationProp } from "../navigation/types";
 import { useNavigation } from "@react-navigation/native";
 import { globalHeight, globalWidth } from "../constants";
+import { fallBackMoviePoster, imageW185 } from "../api/themoviedb";
 
 interface MovieListProps {
   Movies: Movie[];
@@ -36,24 +37,22 @@ const MovieList: React.FC<MovieListProps> = ({ Movies, title, seeAll }) => {
       >
         {Movies.map((item, index) => {
           return (
-            <TouchableOpacity
-              className="items-center"
-              key={index}
-              onPress={() => handleClick(item)}
-            >
+            <TouchableOpacity key={index} onPress={() => handleClick(item)}>
               <View className="mr-4 space-y-1">
                 <Image
                   className="rounded-xl"
-                  source={require("../assets/images/movie1.jpg")}
+                  source={{
+                    uri: imageW185(item.poster_path) || fallBackMoviePoster,
+                  }}
                   style={{ width: globalWidth(30), height: globalHeight(25) }}
                 />
               </View>
               <Text
                 style={{ width: globalWidth(25) }}
-                className="ml-1 text-neutral-300"
+                className="mt-2 ml-1 text-neutral-300"
                 numberOfLines={1}
               >
-                {item.name}
+                {item.title}
               </Text>
             </TouchableOpacity>
           );
