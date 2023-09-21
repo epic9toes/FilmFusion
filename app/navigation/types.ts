@@ -14,8 +14,21 @@ export interface Movie {
 }
 
 export type Person = {
+  adult: boolean;
   id: number;
-  name?: string;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+  place_of_birth?: string;
+  birthday?: string;
+  gender?: number;
+  biography?: string;
 };
 
 export type RootStackParamList = {

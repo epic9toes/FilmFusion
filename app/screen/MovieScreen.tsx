@@ -10,7 +10,9 @@ import TopButtons from "../components/topButtons";
 import Loading from "../components/loading";
 import {
   fallBackMoviePoster,
+  fetchMovieCredits,
   fetchMovieDetails,
+  fetchSimilarMovies,
   imageW500,
 } from "../api/themoviedb";
 
@@ -34,47 +36,37 @@ type Details = {
   status?: string;
   runtime: number;
 };
-type genre = {
-  id: number;
-  name: string;
-};
 
 const MovieScreen: React.FC<MovieScreenProps> = ({ route }) => {
-  const [similarMovies, setSimilarMovies] = useState<Movie[]>([
-    { id: 1, name: "The Flying Dragon" },
-    { id: 1, name: "Shining Amour" },
-    { id: 1, name: "The Offer" },
-  ]);
-  const [cast, setCast] = useState<Person[]>([
-    {
-      id: 1,
-      name: "Sabastin",
-    },
-    {
-      id: 2,
-      name: "Nneka",
-    },
-    {
-      id: 3,
-      name: "Grace",
-    },
-  ]);
+  const [similarMovies, setSimilarMovies] = useState<Movie[]>([]);
+  const [cast, setCast] = useState<Person[]>([]);
   const [movieInfo, setMovieInfo] = useState<Details>();
   const movie = route.params;
   const { id } = route.params.movie;
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log(`movie info: ${JSON.stringify(movie)}`);
   useEffect(() => {
     //logic
     setLoading(true);
     getMovieDetails(id);
+    getMovieCredits(id);
+    getSimilarMovies(id);
   }, [movie]);
 
   const getMovieDetails = async (id: number) => {
     const data = await fetchMovieDetails(id);
     if (data) setMovieInfo(data);
     setLoading(false);
+  };
+
+  const getMovieCredits = async (id: number) => {
+    const data = await fetchMovieCredits(id);
+    if (data) setCast(data.cast);
+  };
+
+  const getSimilarMovies = async (id: number) => {
+    const data = await fetchSimilarMovies(id);
+    if (data?.results) setSimilarMovies(data.results);
   };
 
   return (

@@ -32,6 +32,12 @@ const movieCreditEndpoint = (movieID) =>
 const similarMoviesEndpoint = (movieID) =>
   `${_apiBaseURL}/movie/${movieID}/similar?api_key=${apiKey}`;
 
+const actorDetailsEndpoint = (actorID) =>
+  `${_apiBaseURL}/person/${actorID}?api_key=${apiKey}`;
+
+const actorMoviesEndpoint = (actorId) =>
+  `${_apiBaseURL}/person/${actorId}/movie_credits?api_key=${apiKey}`;
+
 // Basic fetch Endpoints
 export const fetchTrendingMovies = () => {
   return apiCall(trendingMoviesEndPoint);
@@ -55,6 +61,14 @@ export const fetchMovieCredits = (id) => {
 
 export const fetchSimilarMovies = (id) => {
   return apiCall(similarMoviesEndpoint(id));
+};
+
+export const fetchActorDetails = (actorId) => {
+  return apiCall(actorDetailsEndpoint(actorId));
+};
+
+export const fetchActorMovies = (actorId) => {
+  return apiCall(actorMoviesEndpoint(actorId));
 };
 
 // image width sizes
