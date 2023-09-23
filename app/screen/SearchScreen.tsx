@@ -7,30 +7,54 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { useNavigation } from "@react-navigation/native";
 import { Movie, RootStackNavigationProp } from "app/navigation/types";
 import { globalHeight, globalWidth } from "../constants";
 import AnimatedLottieView from "lottie-react-native";
+import { debounce } from "lodash";
+import {
+  fallBackMoviePoster,
+  imageW185,
+  searchMovies,
+} from "../api/themoviedb";
+import Loading from "../components/loading";
 
 export default function SearchScreen() {
-  const [results, setResults] = useState<Movie[]>([
-    { id: 1, name: "The Flying Dragon" },
-    { id: 1, name: "Shining Amour" },
-    { id: 1, name: "The Offer" },
-  ]);
+  const [results, setResults] = useState<Movie[]>([]);
   const navigation = useNavigation<RootStackNavigationProp<"Movie" | "Home">>();
+  const [loading, setLoading] = useState<boolean>(false);
   // Function to navigate to the "Movie" screen with a selected movie object
   const handleClick = (selectedMovie: Movie) => {
     navigation.navigate("Movie", { movie: selectedMovie });
   };
 
+  const handleSearch = (text: string) => {
+    if (text) {
+      setLoading(true);
+      searchMovies({
+        query: text,
+        include_adult: "false",
+        language: "en-US",
+        page: "1",
+      }).then((data) => {
+        setLoading(false);
+        if (data.results) setResults(data.results);
+      });
+    } else {
+      setLoading(false);
+      setResults([]);
+    }
+  };
+  const handleTextDebounce = useCallback(debounce(handleSearch, 400), []);
+
   return (
     <SafeAreaView className="flex-1 bg-neutral-800">
       <View className="flex-row items-center justify-between mx-4 mb-3 border rounded-full border-neutral-500">
         <TextInput
+          onChangeText={handleTextDebounce}
           className="flex-1 pb-1 pl-6 text-base font-semibold tracking-wider text-white"
           placeholder="Search Movie"
           placeholderTextColor={"lightgray"}
@@ -44,7 +68,9 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
       {/* Results */}
-      {results.length > 0 ? (
+      {loading ? (
+        <Loading />
+      ) : results.length > 0 ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingHorizontal: 15 }}
@@ -64,14 +90,20 @@ export default function SearchScreen() {
                   <View className="mb-4 space-y-2">
                     <Image
                       className="rounded-3xl"
-                      source={require("../assets/images/movie1.jpg")}
+                      source={{
+                        uri: imageW185(item.poster_path) || fallBackMoviePoster,
+                      }}
                       style={{
                         width: globalWidth(44),
                         height: globalHeight(30),
                       }}
                     />
-                    <Text className="ml-1 text-neutral-300" numberOfLines={1}>
-                      {item.name}
+                    <Text
+                      style={{ width: globalWidth(40) }}
+                      className="ml-1 text-neutral-300"
+                      numberOfLines={1}
+                    >
+                      {item.title}
                     </Text>
                   </View>
                 </TouchableWithoutFeedback>

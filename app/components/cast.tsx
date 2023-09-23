@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { Person, RootStackNavigationProp } from "app/navigation/types";
 import { useNavigation } from "@react-navigation/native";
+import { fallBackPersonPoster, imageW185 } from "../api/themoviedb";
 
 interface CastProps {
   cast: Person[];
@@ -17,7 +18,7 @@ const Cast: React.FC<CastProps> = ({ cast }) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
-        {cast?.map((person, index) => {
+        {cast.map((person, index) => {
           return (
             <TouchableOpacity
               onPress={() => navigation.navigate("Person", { person })}
@@ -27,15 +28,19 @@ const Cast: React.FC<CastProps> = ({ cast }) => {
               {/* Image */}
               <View className="items-center w-20 h-20 overflow-hidden border rounded-full border-neutral-500">
                 <Image
-                  source={require("../assets/images/artist.jpg")}
+                  source={{
+                    uri: imageW185(person.profile_path) || fallBackPersonPoster,
+                  }}
                   className="w-20 h-24 rounded-2xl"
                 />
               </View>
               {/* Character Name */}
-              <Text className="mt-1 text-xs text-white">John Wick</Text>
+              <Text className="mt-1 text-xs text-white">
+                {person.character}
+              </Text>
               {/* Person Name */}
               <Text className="mt-1 text-xs text-neutral-400">
-                Keanu Reeves
+                {person.original_name}
               </Text>
             </TouchableOpacity>
           );
