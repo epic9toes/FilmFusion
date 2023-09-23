@@ -5,6 +5,7 @@ import axios from "axios";
 const trendingMoviesEndPoint = `${_apiBaseURL}/trending/movie/day?api_key=${apiKey}`;
 const upcomingMoviesEndPoint = `${_apiBaseURL}/movie/upcoming?api_key=${apiKey}`;
 const topRatedMoviesEndPoint = `${_apiBaseURL}/movie/top_rated?api_key=${apiKey}`;
+const searchMoviesEndPoint = `${_apiBaseURL}/search/movie?api_key=${apiKey}`;
 
 const apiCall = async (endpoint, params) => {
   const options = {
@@ -69,6 +70,10 @@ export const fetchActorDetails = (actorId) => {
 
 export const fetchActorMovies = (actorId) => {
   return apiCall(actorMoviesEndpoint(actorId));
+};
+
+export const searchMovies = (params) => {
+  return apiCall(searchMoviesEndPoint, params);
 };
 
 // image width sizes

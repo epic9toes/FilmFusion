@@ -99,9 +99,13 @@ export default function HomeScreen() {
             <TrendingMovies Movies={trendingMovies} />
           )}
           {/* Upcoming Movie List */}
-          <MovieList seeAll={true} title="Upcoming" Movies={upcoming} />
+          {upcoming.length > 0 && (
+            <MovieList seeAll={true} title="Upcoming" Movies={upcoming} />
+          )}
           {/* Top rated movies */}
-          <MovieList seeAll={true} title="Top Rated" Movies={topRated} />
+          {topRated.length > 0 && (
+            <MovieList seeAll={true} title="Top Rated" Movies={topRated} />
+          )}
         </ScrollView>
       )}
     </View>
