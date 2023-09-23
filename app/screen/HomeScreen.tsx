@@ -4,6 +4,7 @@ import {
   Platform,
   TouchableOpacity,
   ScrollView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { AsyncKey, removeItem } from "../helpers/asyncStorage";
@@ -74,7 +75,9 @@ export default function HomeScreen() {
       <SafeAreaView className={ios ? "-mb-2" : "mb-3"}>
         <StatusBar style="light" />
         <View className="flex-row items-center justify-between mx-4">
-          <Bars3CenterLeftIcon size="30" strokeWidth={2} color={"white"} />
+          <TouchableWithoutFeedback onPress={handleAsyncReset}>
+            <Bars3CenterLeftIcon size="30" strokeWidth={2} color={"white"} />
+          </TouchableWithoutFeedback>
           <Text className="text-2xl font-bold text-white">
             <Text className="text-3xl font-extrabold text-yellow-500">F</Text>
             ilm
